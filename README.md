@@ -4,4 +4,3 @@
 <a href="https://github.com/sontixyou/github-readme-stats">
   <img align="left" src="https://github-readme-stats.vercel.app/api/top-langs/?username=sontixyou&count_private=true" />
 </a>
-
