@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="245" viewBox="0 0 300 245" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0.5" y="0.5" width="299" height="244" rx="4.5" fill="#FFFFFF" stroke="#E4E2E2"/>
+  <text x="25" y="35" fill="#41B883" font-size="18" font-weight="600">Most Used Languages</text>
+
+  <g transform="translate(25, 60)">
+    <text x="0" y="0" fill="#273849" font-size="13">Ruby</text>
+    <text x="250" y="0" text-anchor="end" fill="#273849" font-size="13">59.72%</text>
+    <rect x="0" y="8" width="250" height="8" rx="4" fill="#E4E2E2"/>
+    <rect x="0" y="8" width="149.31248594046494" height="8" rx="4" fill="#701516"/>
+  </g>
+  <g transform="translate(25, 95)">
+    <text x="0" y="0" fill="#273849" font-size="13">HTML</text>
+    <text x="250" y="0" text-anchor="end" fill="#273849" font-size="13">13.81%</text>
+    <rect x="0" y="8" width="250" height="8" rx="4" fill="#E4E2E2"/>
+    <rect x="0" y="8" width="34.52317436238471" height="8" rx="4" fill="#e34c26"/>
+  </g>
+  <g transform="translate(25, 130)">
+    <text x="0" y="0" fill="#273849" font-size="13">Lua</text>
+    <text x="250" y="0" text-anchor="end" fill="#273849" font-size="13">12.95%</text>
+    <rect x="0" y="8" width="250" height="8" rx="4" fill="#E4E2E2"/>
+    <rect x="0" y="8" width="32.375391710386324" height="8" rx="4" fill="#000080"/>
+  </g>
+  <g transform="translate(25, 165)">
+    <text x="0" y="0" fill="#273849" font-size="13">JavaScript</text>
+    <text x="250" y="0" text-anchor="end" fill="#273849" font-size="13">8.61%</text>
+    <rect x="0" y="8" width="250" height="8" rx="4" fill="#E4E2E2"/>
+    <rect x="0" y="8" width="21.52500841895022" height="8" rx="4" fill="#f1e05a"/>
+  </g>
+  <g transform="translate(25, 200)">
+    <text x="0" y="0" fill="#273849" font-size="13">Shell</text>
+    <text x="250" y="0" text-anchor="end" fill="#273849" font-size="13">4.91%</text>
+    <rect x="0" y="8" width="250" height="8" rx="4" fill="#E4E2E2"/>
+    <rect x="0" y="8" width="12.263939567813805" height="8" rx="4" fill="#89e051"/>
+  </g>
+</svg>
