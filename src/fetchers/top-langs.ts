@@ -3,8 +3,8 @@ import { retry } from "../lib/retry.js";
 
 export type Language = { name: string; color: string; size: number };
 
-type Response = {
-  user: {
+type TopLangsQueryResponse = {
+  user: null | {
     repositories: {
       nodes: {
         languages: {
@@ -42,13 +42,14 @@ export const fetchTopLanguages = async (
 ): Promise<Language[]> => {
   const data = await retry(
     () =>
-      graphql<Response>(QUERY, {
+      graphql<TopLangsQueryResponse>(QUERY, {
         login,
         headers: { authorization: `token ${token}` },
       }),
     { label: "fetchTopLanguages" },
   );
 
+  if (!data.user) throw new Error(`User '${login}' not found`);
   const totals = new Map<string, Language>();
   for (const repo of data.user.repositories.nodes) {
     for (const edge of repo.languages.edges) {

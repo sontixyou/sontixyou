@@ -10,10 +10,20 @@ export const retry = async <T>(
       return await fn();
     } catch (err) {
       lastErr = err;
-      const status = (err as { status?: number })?.status;
-      const transient = status === undefined || status >= 500 || status === 408 || status === 429;
+      const status =
+        typeof err === "object" && err !== null && "status" in err && typeof (err as { status: unknown }).status === "number"
+          ? (err as { status: number }).status
+          : undefined;
+      const code =
+        typeof err === "object" && err !== null && "code" in err && typeof (err as { code: unknown }).code === "string"
+          ? (err as { code: string }).code
+          : undefined;
+      const NETWORK_ERRNOS = new Set(["ECONNRESET", "ETIMEDOUT", "ENOTFOUND", "EAI_AGAIN", "ENETUNREACH"]);
+      const transient =
+        (status !== undefined && (status >= 500 || status === 408 || status === 429)) ||
+        (code !== undefined && NETWORK_ERRNOS.has(code));
       if (!transient || i === attempts - 1) throw err;
-      const delay = baseMs * Math.pow(2, i);
+      const delay = Math.round(baseMs * Math.pow(2, i) * (0.75 + Math.random() * 0.5));
       console.warn(
         `[${opts.label ?? "retry"}] attempt ${i + 1}/${attempts} failed (status=${status ?? "?"}); retrying in ${delay}ms`,
       );

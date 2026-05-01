@@ -10,6 +10,9 @@ const THEME = {
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 
+const escapeXml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
 const row = (y: number, icon: string, label: string, value: number) => `
   <g transform="translate(25, ${y})">
     <text x="0" y="12.5" fill="${THEME.icon}" font-size="14">${icon}</text>
@@ -34,7 +37,7 @@ const rankCircle = (rank: { level: string; percentile: number }) => {
 };
 
 export const renderStatsCard = (stats: Stats): string => {
-  const title = `${stats.name}'s GitHub Stats`;
+  const title = `${escapeXml(stats.name)}'s GitHub Stats`;
   const W = 495, H = 195;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
