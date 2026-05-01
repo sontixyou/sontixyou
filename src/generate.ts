@@ -22,7 +22,7 @@ const main = async () => {
 
   const [stats, langs] = await Promise.all([
     fetchStats(login, token, true),
-    fetchTopLanguages(login, token, 5),
+    fetchTopLanguages(login, token),
   ]);
 
   const statsSvg = renderStatsCard(stats);
@@ -37,6 +37,6 @@ const main = async () => {
 };
 
 main().catch((err) => {
-  console.error(err);
+  console.error(err instanceof Error ? `${err.name}: ${err.message}` : err);
   process.exit(1);
 });

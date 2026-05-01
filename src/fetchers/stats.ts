@@ -13,8 +13,8 @@ export type Stats = {
   rank: { level: string; percentile: number };
 };
 
-type Response = {
-  user: {
+type StatsQueryResponse = {
+  user: null | {
     name: string | null;
     login: string;
     contributionsCollection: {
@@ -44,7 +44,7 @@ const QUERY = /* GraphQL */ `
         totalPullRequestReviewContributions
         restrictedContributionsCount
       }
-      repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
+      repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, PULL_REQUEST_REVIEW]) {
         totalCount
       }
       pullRequests(first: 1) {
@@ -101,10 +101,13 @@ const calculateRank = (s: {
     TOTAL;
 
   const percentile = 100 * (1 - score);
-  const THRESHOLDS = [1, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100];
-  const LEVELS = ["S", "A+", "A", "A-", "B+", "B", "B-", "C+", "C"];
-  const idx = THRESHOLDS.findIndex((t) => percentile <= t);
-  return { level: LEVELS[idx === -1 ? LEVELS.length - 1 : idx]!, percentile };
+  const TIERS = [
+    { max: 1, level: "S" }, { max: 12.5, level: "A+" }, { max: 25, level: "A" },
+    { max: 37.5, level: "A-" }, { max: 50, level: "B+" }, { max: 62.5, level: "B" },
+    { max: 75, level: "B-" }, { max: 87.5, level: "C+" }, { max: 100, level: "C" },
+  ] as const;
+  const tier = TIERS.find((t) => percentile <= t.max);
+  return { level: tier?.level ?? "C", percentile };
 };
 
 export const fetchStats = async (
@@ -114,7 +117,7 @@ export const fetchStats = async (
 ): Promise<Stats> => {
   const data = await retry(
     () =>
-      graphql<Response>(QUERY, {
+      graphql<StatsQueryResponse>(QUERY, {
         login,
         headers: { authorization: `token ${token}` },
       }),
@@ -122,6 +125,7 @@ export const fetchStats = async (
   );
 
   const u = data.user;
+  if (!u) throw new Error(`User '${login}' not found`);
   const totalStars = u.repositories.nodes.reduce((sum, r) => sum + r.stargazers.totalCount, 0);
   const totalCommits =
     u.contributionsCollection.totalCommitContributions +

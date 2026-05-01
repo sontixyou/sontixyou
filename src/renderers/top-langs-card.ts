@@ -10,6 +10,9 @@ const THEME = {
 const escapeXml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+const HEX_COLOR = /^#[0-9a-fA-F]{3,8}$/;
+const safeColor = (c: string) => (HEX_COLOR.test(c) ? c : "#858585");
+
 export const renderTopLangsCard = (langs: Language[]): string => {
   const W = 300;
   const headerY = 35;
@@ -30,7 +33,7 @@ export const renderTopLangsCard = (langs: Language[]): string => {
     <text x="0" y="0" fill="${THEME.text}" font-size="13">${escapeXml(l.name)}</text>
     <text x="${barW}" y="0" text-anchor="end" fill="${THEME.text}" font-size="13">${pct.toFixed(2)}%</text>
     <rect x="0" y="8" width="${barW}" height="8" rx="4" fill="#E4E2E2"/>
-    <rect x="0" y="8" width="${fillW}" height="8" rx="4" fill="${l.color}"/>
+    <rect x="0" y="8" width="${fillW}" height="8" rx="4" fill="${safeColor(l.color)}"/>
   </g>`;
     })
     .join("");
